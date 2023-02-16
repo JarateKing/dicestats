@@ -62,10 +62,15 @@ class Diceroll:
         
         self.probabilities = newprob
     
+    def __sort_probabilities(self):
+        self.probabilities = dict(sorted(self.probabilities.items()))
+    
     def get_probabilities(self):
+        self.__sort_probabilities()
         return self.probabilities
     
     def print_probabilities(self, precision = 4):
+        self.__sort_probabilities()
         maxvaluewidth = 0
         
         for value in self.probabilities.keys():
@@ -77,6 +82,7 @@ class Diceroll:
         print()
     
     def plot_probabilities(self, width = 100, barchar = '#'):
+        self.__sort_probabilities()
         maxvaluewidth = 0
         
         for value in self.probabilities.keys():
@@ -101,6 +107,7 @@ class Diceroll:
 
 diceroll = Diceroll()
 diceroll.add(Diceroller.rolldice(2, 6))
+diceroll.subtract(Diceroller.rolldice(2, 6))
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
 
