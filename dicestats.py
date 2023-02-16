@@ -1,3 +1,5 @@
+import random
+
 class Diceroller:
     def rolldie(sides):
         probabilities = {}
@@ -71,8 +73,22 @@ class Diceroll:
             print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
         
         print()
+    
+    def roll(self):
+        choice = random.random()
+        
+        for value, probability in self.probabilities.items():
+            if probability > choice:
+                return value
+            else:
+                choice -= probability
+        
+        return max(self.probabilities.keys())
 
 diceroll = Diceroll()
 diceroll.add(Diceroller.rolldice(2, 6))
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
+
+for i in range(10):
+    print(diceroll.roll())
