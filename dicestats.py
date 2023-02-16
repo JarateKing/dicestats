@@ -12,9 +12,9 @@ class Diceroll:
                 current = value + i + 1
                 
                 if not current in newprob.keys():
-                    newprob[current] = (1 / sides)
-                else:
-                    newprob[current] += probability * (1 / sides)
+                    newprob[current] = 0
+                
+                newprob[current] += probability * (1 / sides)
         
         self.probabilities = newprob
     
