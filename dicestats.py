@@ -1,5 +1,3 @@
-import os
-
 class Diceroll:
     def __init__(self):
         self.probabilities = {0: 1.0}
@@ -25,14 +23,14 @@ class Diceroll:
     def get_probabilities(self):
         return self.probabilities
     
-    def print_probabilities(self):
+    def print_probabilities(self, precision = 4):
         maxvaluewidth = 0
         
         for value in self.probabilities.keys():
             maxvaluewidth = max(maxvaluewidth, len(str(value)))
             
         for value, probability in self.probabilities.items():
-            print("{0: >{2}d}: {1:.4f}%".format(value, probability * 100, maxvaluewidth))
+            print("{0: >{2}d}: {1:.{3}f}%".format(value, probability * 100, maxvaluewidth, precision))
             
         print()
     
