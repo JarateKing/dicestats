@@ -30,7 +30,7 @@ class Diceroll:
             maxvaluewidth = max(maxvaluewidth, len(str(value)))
             
         for value, probability in self.probabilities.items():
-            print("{0: >{2}d}: {1:.{3}f}%".format(value, probability * 100, maxvaluewidth, precision))
+            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, probability * 100, maxvaluewidth, precision, precision + 4))
             
         print()
     
