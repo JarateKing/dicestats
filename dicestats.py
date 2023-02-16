@@ -94,6 +94,9 @@ class Diceroll:
     
     def subtract_constant(self, constant):
         self.apply_function(lambda x: x - constant)
+        
+    def multiply_constant(self, constant):
+        self.apply_function(lambda x: x * constant)
     
     def __sort_probabilities(self):
         self.probabilities = dict(sorted(self.probabilities.items()))
