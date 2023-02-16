@@ -35,11 +35,20 @@ class Diceroll:
             print("{0: >{2}d}: {1:.4f}%".format(value, probability * 100, maxvaluewidth))
             
         print()
-
-diceroll = Diceroll()
-diceroll.rolldice(1, 6)
-diceroll.print_probabilities()
+    
+    def plot_probabilities(self, width = 100, barchar = '#'):
+        maxvaluewidth = 0
+        
+        for value in self.probabilities.keys():
+            maxvaluewidth = max(maxvaluewidth, len(str(value)))
+        
+        for value, probability in self.probabilities.items():
+            barstr = barchar * round(probability * 100 / (100 / width))
+            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
+        
+        print()
 
 diceroll = Diceroll()
 diceroll.rolldice(2, 6)
 diceroll.print_probabilities()
+diceroll.plot_probabilities()
