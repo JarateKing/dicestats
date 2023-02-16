@@ -20,9 +20,9 @@ class Diceroll:
         for i in range(count):
             self.rolldie(sides)
     
-    def print_probabilities(self):
-        print(self.probabilities)
+    def get_probabilities(self):
+        return self.probabilities
 
 diceroll = Diceroll()
 diceroll.rolldice(2, 6)
-diceroll.print_probabilities()
+print(diceroll.get_probabilities())
