@@ -1,24 +1,50 @@
+class Diceroller:
+    def rolldie(sides):
+        probabilities = {}
+        
+        for i in range(sides):
+            current = i + 1
+            probabilities[current] = 1 / sides
+        
+        return probabilities
+    
+    def rolldice(count, sides):
+        probabilities = {0: 1.0}
+        
+        for i in range(count):
+            newprob = {}
+            
+            for value, probability in probabilities.items():
+                for value2, probability2 in Diceroller.rolldie(sides).items():
+                    current = value + value2
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+            
+            probabilities = newprob.copy()
+        
+        return probabilities
+            
+
 class Diceroll:
     def __init__(self):
         self.probabilities = {0: 1.0}
     
-    def rolldie(self, sides):
+    def add(self, probabilities):
         newprob = {}
         
         for value, probability in self.probabilities.items():
-            for i in range(sides):
-                current = value + i + 1
+            for value2, probability2 in probabilities.items():
+                current = value + value2
                 
                 if not current in newprob.keys():
                     newprob[current] = 0
                 
-                newprob[current] += probability * (1 / sides)
+                newprob[current] += probability * probability2
         
         self.probabilities = newprob
-    
-    def rolldice(self, count, sides):
-        for i in range(count):
-            self.rolldie(sides)
     
     def get_probabilities(self):
         return self.probabilities
@@ -47,6 +73,6 @@ class Diceroll:
         print()
 
 diceroll = Diceroll()
-diceroll.rolldice(2, 6)
+diceroll.add(Diceroller.rolldice(2, 6))
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
