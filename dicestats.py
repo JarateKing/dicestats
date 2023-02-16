@@ -62,6 +62,20 @@ class Diceroll:
         
         self.probabilities = newprob
     
+    def multiply(self, probabilities):
+        newprob = {}
+        
+        for value, probability in self.probabilities.items():
+            for value2, probability2 in probabilities.items():
+                current = value * value2
+                
+                if not current in newprob.keys():
+                    newprob[current] = 0
+                
+                newprob[current] += probability * probability2
+        
+        self.probabilities = newprob
+    
     def __sort_probabilities(self):
         self.probabilities = dict(sorted(self.probabilities.items()))
     
