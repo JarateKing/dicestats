@@ -76,6 +76,22 @@ class Diceroll:
         
         self.probabilities = newprob
     
+    def apply_function(self, function):
+        newprob = {}
+        
+        for value, probability in self.probabilities.items():
+            current = function(value)
+                
+            if not current in newprob.keys():
+                newprob[current] = 0
+                
+            newprob[current] += probability
+        
+        self.probabilities = newprob
+    
+    def add_constant(self, constant):
+        self.apply_function(lambda x: x + constant)
+    
     def __sort_probabilities(self):
         self.probabilities = dict(sorted(self.probabilities.items()))
     
@@ -121,7 +137,7 @@ class Diceroll:
 
 diceroll = Diceroll()
 diceroll.add(Diceroller.rolldice(2, 6))
-diceroll.subtract(Diceroller.rolldice(2, 6))
+diceroll.add_constant(10)
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
 
