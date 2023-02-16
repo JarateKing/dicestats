@@ -34,12 +34,12 @@ class Diceroll:
     def __init__(self):
         self.probabilities = {0: 1.0}
     
-    def add(self, probabilities):
+    def apply_probability(self, probabilities, function):
         newprob = {}
         
         for value, probability in self.probabilities.items():
             for value2, probability2 in probabilities.items():
-                current = value + value2
+                current = function(value, value2)
                 
                 if not current in newprob.keys():
                     newprob[current] = 0
@@ -47,34 +47,15 @@ class Diceroll:
                 newprob[current] += probability * probability2
         
         self.probabilities = newprob
+    
+    def add(self, probabilities):
+        self.apply_probability(probabilities, lambda x, y: x + y)
     
     def subtract(self, probabilities):
-        newprob = {}
-        
-        for value, probability in self.probabilities.items():
-            for value2, probability2 in probabilities.items():
-                current = value - value2
-                
-                if not current in newprob.keys():
-                    newprob[current] = 0
-                
-                newprob[current] += probability * probability2
-        
-        self.probabilities = newprob
+        self.apply_probability(probabilities, lambda x, y: x - y)
     
     def multiply(self, probabilities):
-        newprob = {}
-        
-        for value, probability in self.probabilities.items():
-            for value2, probability2 in probabilities.items():
-                current = value * value2
-                
-                if not current in newprob.keys():
-                    newprob[current] = 0
-                
-                newprob[current] += probability * probability2
-        
-        self.probabilities = newprob
+        self.apply_probability(probabilities, lambda x, y: x * y)
     
     def apply_function(self, function):
         newprob = {}
@@ -143,7 +124,6 @@ class Diceroll:
 
 diceroll = Diceroll()
 diceroll.add(Diceroller.rolldice(2, 6))
-diceroll.add_constant(10)
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
 
