@@ -29,11 +29,15 @@ class Diceroller:
         
         return probabilities
     
-    def explodingdice(count, sides, recursiveDepth = 10):
+    def explodingdice(count, sides, recursiveDepth = 10, probabilityLimit = 0):
         # get exploded probabilities
         explodedProbabilities = {}
         offset = 0
         runningProbability = 1
+        
+        if probabilityLimit != 0:
+            recursiveDepth = 1000
+        
         for r in range(recursiveDepth):
             for i in range(sides):
                 current = offset + i + 1
@@ -44,6 +48,11 @@ class Diceroller:
                 else:
                     offset = current
                     runningProbability = probability
+                
+                if runningProbability <= probabilityLimit:
+                    break
+            if runningProbability <= probabilityLimit:
+                break
         
         # apply exploded probabilities with rolls
         probabilities = {0: 1.0}
