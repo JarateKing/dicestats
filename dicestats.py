@@ -263,6 +263,22 @@ class RawConvert:
                     lowestSet = True
         
         return lowest
+    
+    def maxShared(rawdice):
+        rollcounts = {}
+        
+        for dicetype in rawdice:
+            for roll in dicetype[1]:
+                if not roll in rollcounts.keys():
+                    rollcounts[roll] = 0
+                    
+                rollcounts[roll] += 1
+        
+        best = 0
+        for value in rollcounts.values():
+            best = max(best, value)
+        
+        return best
 
 class RawDiceroll:
     def __init__(self):
@@ -359,6 +375,10 @@ class RawDiceroll:
         toret.set_probabilities(newprob)
         return toret
 
-diceroll = Diceroll()
-diceroll.add(Diceroller.dice(2, 3))
+diceroll = RawDiceroll()
+diceroll.apply_probability(RawDiceroller.rolldice(4, 4))
+diceroll.apply_probability(RawDiceroller.rolldice(3, 6))
+diceroll.apply_probability(RawDiceroller.rolldice(2, 10))
+diceroll = diceroll.convert(RawConvert.maxShared)
 diceroll.print_probabilities()
+diceroll.plot_probabilities(relativeBars = True)
