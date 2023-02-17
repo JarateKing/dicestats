@@ -122,10 +122,141 @@ class Diceroll:
         
         return max(self.probabilities.keys())
 
-diceroll = Diceroll()
-diceroll.add(Diceroller.rolldice(2, 6))
+class RawDiceroller:
+    def rolldie(sides, name = ''):
+        probabilities = {}
+        
+        for i in range(sides):
+            current = i + 1
+            probabilities[((name, (current,)),)] = 1 / sides
+        
+        return probabilities
+    
+    def rolldice(count, sides, name = ''):
+        probabilities = {(): 1.0}
+        
+        for i in range(count):
+            newprob = {}
+            
+            for value, probability in probabilities.items():
+                for value2, probability2 in RawDiceroller.rolldie(sides, name).items():
+                    current = value
+                    
+                    toadd = ()
+                    # get the rolls to add
+                    for val in value2:
+                        if val[0] == name:
+                            toadd = val[1]
+                    
+                    # ensure that the name exists in the tuple
+                    valueExists = False
+                    for val in value:
+                        if val[0] == name:
+                            valueExists = True
+                    if not valueExists:
+                        current = value + ((name, ()),)
+                    
+                    # add roll to that name's tuple
+                    current = list(current)
+                    for j in range(len(current)):
+                        val = current[j]
+                        if val[0] == name:
+                            current[j] = (name, tuple(sorted(val[1] + toadd)))
+                    current = tuple(sorted(current))
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+            
+            probabilities = newprob.copy()
+        
+        return probabilities
+
+class RawDiceroll:
+    def __init__(self):
+        self.probabilities = {(): 1.0}
+    
+    def apply_probability(self, probabilities):
+        newprob = {}
+        
+        for value, probability in self.probabilities.items():
+            for value2, probability2 in probabilities.items():
+                for name in map(lambda x: x[0], value2):
+                    current = value
+                    
+                    toadd = ()
+                    # get the rolls to add
+                    for val in value2:
+                        if val[0] == name:
+                            toadd = val[1]
+                    
+                    # ensure that the name exists in the tuple
+                    valueExists = False
+                    for val in value:
+                        if val[0] == name:
+                            valueExists = True
+                    if not valueExists:
+                        current = value + ((name, ()),)
+                    
+                    # add roll to that name's tuple
+                    current = list(current)
+                    for j in range(len(current)):
+                        val = current[j]
+                        if val[0] == name:
+                            current[j] = (name, tuple(sorted(val[1] + toadd)))
+                    current = tuple(sorted(current))
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+        
+        self.probabilities = newprob
+    
+    def print_probabilities(self, precision = 4):
+        maxlinewidth = 0
+        lines = {}
+        
+        # build dict of lines
+        for value, probability in self.probabilities.items():
+            line = ' '.join(map(lambda x: '"' + str(x[0]) + '"=' + ','.join(map(lambda x: str(x), x[1])), value))
+            lines[line] = probability
+        
+        # get maximum size for formatting purposes
+        for line in lines.keys():
+            maxlinewidth = max(maxlinewidth, len(line))
+            
+        # print
+        for line, probability in lines.items():
+            print("{0:<{2}}: {1:{4}.{3}f}%".format(line, probability * 100, maxlinewidth, precision, precision + 4))
+        print()
+    
+    def plot_probabilities(self, width = 100, barchar = '#'):
+        maxlinewidth = 0
+        lines = {}
+        
+        # build dict of lines
+        for value, probability in self.probabilities.items():
+            line = ' '.join(map(lambda x: '"' + str(x[0]) + '"=' + ','.join(map(lambda x: str(x), x[1])), value))
+            lines[line] = probability
+        
+        # get maximum size for formatting purposes
+        for line in lines.keys():
+            maxlinewidth = max(maxlinewidth, len(line))
+            
+        # print
+        for line, probability in lines.items():
+            barstr = barchar * round(probability * 100 / (100 / width))
+            print("{0:<{2}}:".format(line, probability * 100, maxlinewidth), barstr)
+        print()
+    
+    def get_probabilities(self):
+        return self.probabilities
+
+diceroll = RawDiceroll()
+diceroll.apply_probability(RawDiceroller.rolldie(2, 'd2'))
+diceroll.apply_probability(RawDiceroller.rolldice(3, 2, 'd2'))
+diceroll.apply_probability(RawDiceroller.rolldice(1, 4, 'd4'))
 diceroll.print_probabilities()
 diceroll.plot_probabilities()
-
-for i in range(10):
-    print(diceroll.roll())
