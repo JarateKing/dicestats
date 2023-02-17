@@ -212,6 +212,19 @@ class RawConvert:
         
         return highest
     
+    def minimum(rawdice):
+        lowest = 0
+        lowestSet = False
+        
+        for dicetype in rawdice:
+            for roll in dicetype[1]:
+                if lowestSet:
+                    lowest = min(lowest, roll)
+                else:
+                    lowest = roll
+                    lowestSet = True
+        
+        return lowest
 
 class RawDiceroll:
     def __init__(self):
@@ -314,5 +327,5 @@ diceroll.plot_probabilities(relativeBars = True)
 
 raw = RawDiceroll()
 raw.apply_probability(RawDiceroller.rolldice(3, 6))
-diceroll = raw.convert(RawConvert.maximum)
+diceroll = raw.convert(RawConvert.minimum)
 diceroll.plot_probabilities(relativeBars = True)
