@@ -113,6 +113,20 @@ class Diceroll:
         
         print()
     
+    def print_statistics(self, precision = 4):
+        mean = 0
+        for value, probability in self.probabilities.items():
+            mean += value * probability
+        print("mean:     {0:.{1}f}".format(mean, precision))
+        
+        variance = 0
+        for value, probability in self.probabilities.items():
+            variance += (value - mean)**2 * probability
+        print("variance: {0:.{1}f}".format(variance, precision))
+        print("std:      {0:.{1}f}".format(variance**0.5, precision))
+        
+        print()
+    
     def roll(self):
         choice = random.random()
         
@@ -255,9 +269,7 @@ class RawDiceroll:
     def get_probabilities(self):
         return self.probabilities
 
-diceroll = RawDiceroll()
-diceroll.apply_probability(RawDiceroller.rolldie(2, 'd2'))
-diceroll.apply_probability(RawDiceroller.rolldice(3, 2, 'd2'))
-diceroll.apply_probability(RawDiceroller.rolldice(1, 4, 'd4'))
-diceroll.print_probabilities()
+diceroll = Diceroll()
+diceroll.add(Diceroller.rolldice(3, 6))
 diceroll.plot_probabilities(relativeBars = True)
+diceroll.print_statistics()
