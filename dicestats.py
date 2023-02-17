@@ -86,6 +86,10 @@ class Diceroll:
         self.__sort_probabilities()
         return self.probabilities
     
+    def set_probabilities(self, probabilities):
+        self.probabilities = probabilities
+        self.__sort_probabilities()
+    
     def print_probabilities(self, precision = 4):
         self.__sort_probabilities()
         maxvaluewidth = 0
@@ -189,6 +193,16 @@ class RawDiceroller:
         
         return probabilities
 
+class RawConvert:
+    def add(rawdice):
+        total = 0
+        
+        for dicetype in rawdice:
+            for roll in dicetype[1]:
+                total += roll
+        
+        return total
+
 class RawDiceroll:
     def __init__(self):
         self.probabilities = {(): 1.0}
@@ -268,8 +282,27 @@ class RawDiceroll:
     
     def get_probabilities(self):
         return self.probabilities
+    
+    def convert(self, function):
+        newprob = {}
+        
+        for value, probability in self.probabilities.items():
+            current = function(value)
+            
+            if not current in newprob.keys():
+                newprob[current] = 0
+                
+            newprob[current] += probability
+        
+        toret = Diceroll()
+        toret.set_probabilities(newprob)
+        return toret
 
 diceroll = Diceroll()
 diceroll.add(Diceroller.rolldice(3, 6))
 diceroll.plot_probabilities(relativeBars = True)
-diceroll.print_statistics()
+
+raw = RawDiceroll()
+raw.apply_probability(RawDiceroller.rolldice(3, 6))
+diceroll = raw.convert(RawConvert.add)
+diceroll.plot_probabilities(relativeBars = True)
