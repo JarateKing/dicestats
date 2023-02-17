@@ -202,6 +202,16 @@ class RawConvert:
                 total += roll
         
         return total
+    
+    def maximum(rawdice):
+        highest = 0
+        
+        for dicetype in rawdice:
+            for roll in dicetype[1]:
+                highest = max(highest, roll)
+        
+        return highest
+    
 
 class RawDiceroll:
     def __init__(self):
@@ -304,5 +314,5 @@ diceroll.plot_probabilities(relativeBars = True)
 
 raw = RawDiceroll()
 raw.apply_probability(RawDiceroller.rolldice(3, 6))
-diceroll = raw.convert(RawConvert.add)
+diceroll = raw.convert(RawConvert.maximum)
 diceroll.plot_probabilities(relativeBars = True)
