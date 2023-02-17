@@ -28,7 +28,40 @@ class Diceroller:
             probabilities = newprob.copy()
         
         return probabilities
+    
+    def explodingdice(count, sides, recursiveDepth = 10):
+        # get exploded probabilities
+        explodedProbabilities = {}
+        offset = 0
+        runningProbability = 1
+        for r in range(recursiveDepth):
+            for i in range(sides):
+                current = offset + i + 1
+                probability = 1 / sides * runningProbability
+                
+                if (i + 1) != sides:
+                    explodedProbabilities[current] = probability
+                else:
+                    offset = current
+                    runningProbability = probability
+        
+        # apply exploded probabilities with rolls
+        probabilities = {0: 1.0}
+        for i in range(count):
+            newprob = {}
             
+            for value, probability in probabilities.items():
+                for value2, probability2 in explodedProbabilities.items():
+                    current = value + value2
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+            
+            probabilities = newprob.copy()
+        
+        return probabilities
 
 class Diceroll:
     def __init__(self):
@@ -327,10 +360,5 @@ class RawDiceroll:
         return toret
 
 diceroll = Diceroll()
-diceroll.add(Diceroller.rolldice(3, 6))
-diceroll.plot_probabilities(relativeBars = True)
-
-raw = RawDiceroll()
-raw.apply_probability(RawDiceroller.rolldice(3, 6))
-diceroll = raw.convert(RawConvert.maximum)
-diceroll.plot_probabilities(relativeBars = True)
+diceroll.add(Diceroller.dice(2, 3))
+diceroll.print_probabilities()
