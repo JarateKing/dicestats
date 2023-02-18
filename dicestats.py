@@ -172,6 +172,20 @@ class Diceroll:
         
         print()
     
+    def print_less_than(self, precision = 4):
+        self.__sort_probabilities()
+        maxvaluewidth = 0
+        
+        for value in self.probabilities.keys():
+            maxvaluewidth = max(maxvaluewidth, len(str(value)))
+        
+        current = 0
+        for value, probability in self.probabilities.items():
+            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, current * 100, maxvaluewidth, precision, precision + 4))
+            current += probability
+        
+        print()
+    
     def plot_probabilities(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
         maxvaluewidth = 0
@@ -455,3 +469,4 @@ diceroll.print_at_least()
 diceroll.plot_at_least(relativeBars = True)
 diceroll.print_at_most()
 diceroll.plot_at_most(relativeBars = True)
+diceroll.print_less_than()
