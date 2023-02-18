@@ -246,6 +246,25 @@ class Diceroll:
         
         print()
     
+    def plot_less_than(self, width = 100, barchar = '#', relativeBars = False):
+        self.__sort_probabilities()
+        maxvaluewidth = 0
+        maxpercent = 0
+        
+        current = 0
+        for value, probability in self.probabilities.items():
+            maxvaluewidth = max(maxvaluewidth, len(str(value)))
+            maxpercent = max(maxpercent, current * 100)
+            current += probability
+        
+        current = 0
+        for value, probability in self.probabilities.items():
+            barstr = barchar * round(current * 100 / ((maxpercent if relativeBars else 100) / width))
+            current += probability
+            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
+        
+        print()
+    
     
     def print_statistics(self, precision = 4):
         mean = 0
@@ -484,4 +503,5 @@ diceroll.plot_at_least(relativeBars = True)
 diceroll.print_at_most()
 diceroll.plot_at_most(relativeBars = True)
 diceroll.print_less_than()
+diceroll.plot_less_than(relativeBars = True)
 diceroll.print_more_than()
