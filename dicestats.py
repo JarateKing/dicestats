@@ -202,6 +202,23 @@ class Diceroll:
         
         print()
     
+    def plot_at_most(self, width = 100, barchar = '#', relativeBars = False):
+        self.__sort_probabilities()
+        maxvaluewidth = 0
+        maxpercent = 100
+        
+        for value, probability in self.probabilities.items():
+            maxvaluewidth = max(maxvaluewidth, len(str(value)))
+        
+        current = 0
+        for value, probability in self.probabilities.items():
+            current += probability
+            barstr = barchar * round(current * 100 / (100 / width))
+            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
+        
+        print()
+    
+    
     def print_statistics(self, precision = 4):
         mean = 0
         for value, probability in self.probabilities.items():
@@ -437,3 +454,4 @@ diceroll.plot_probabilities(relativeBars = True)
 diceroll.print_at_least()
 diceroll.plot_at_least(relativeBars = True)
 diceroll.print_at_most()
+diceroll.plot_at_most(relativeBars = True)
