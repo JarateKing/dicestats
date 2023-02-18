@@ -48,6 +48,8 @@ Running this program with `python ./example.py` should give us the output:
 12: ###
 ```
 
+See the [examples](/examples) for more details on usage.
+
 ## Motivation
 
 For anyone familiar with [anydice.com](https://anydice.com/), they'll notice that this fulfills a similar function. However, there are some key differences:
