@@ -1,1 +1,2 @@
-from .dicestats import *
+from .diceroller import *
+from .rawdiceroller import *
