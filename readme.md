@@ -2,6 +2,10 @@
 
 A utility for getting and manipulating probability distributions of dice rolls.
 
+## Basic Usage
+
+The only dependency required is [Python 3](https://www.python.org/downloads/).
+
 ## Motivation
 
 For anyone familiar with [anydice.com](https://anydice.com/), they'll notice that this fulfills a similar function. However, there are some key differences:
