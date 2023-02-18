@@ -8,6 +8,7 @@ The only dependency required is [Python 3](https://www.python.org/downloads/).
 
 We can create a simple program to make use of dicestats:
 
+<details><summary>example.py</summary>
 ```python
 import dicestats
 
@@ -20,8 +21,11 @@ diceroll.add(dicestats.Diceroller.rolldice(2, 6))
 # print out the chances of each roll
 diceroll.print_probabilities()
 ```
+</details>
 
 Running this program with `python ./example.py` should give us the output:
+
+<details><summary>example.py output</summary>
 ```
  2:   2.7778%
  3:   5.5556%
@@ -47,6 +51,7 @@ Running this program with `python ./example.py` should give us the output:
 11: ######
 12: ###
 ```
+</details>
 
 See the [examples](/examples) for more details on usage.
 
