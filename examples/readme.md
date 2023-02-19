@@ -17,3 +17,7 @@ This example demonstrates a more complex dice expression, `3d6 - 2d4 + (3d2 * 2)
 ## exploding.py
 
 An example of exploding dice (dice that when they roll maximum, you reroll them and add the results together, potentially repeating this again each time you roll maximum). Specifically, we roll `2d4` and explode each dice individually when they roll `4`. Because technically any arbitrarily high number could be rolled (though it becomes very unlikely) we also show off different ways to set limits -- by default, dice will only explode up to `10` times. We show manually setting that limit to `5`, and we show another method of limiting it by cutting it off after we're dealing with probabilities below `0.001`.
+
+## commoncount.py
+
+This example shows using the raw diceroller and interpreting the results of the dice in a unique way. Specifically, we roll `10d4` and then analyze the individual rolls to see how many have the same roll as each other. For example, if we rolled `1,1,1,2,2,3,3,3,3,4` we would get the result `4`, since `4` dice share the same number (the `4` rolls of `3`).
