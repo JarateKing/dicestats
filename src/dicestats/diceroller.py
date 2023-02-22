@@ -1,4 +1,5 @@
 import random
+from .outputformatter import *
 
 class Diceroller:
     def rolldie(sides):
@@ -134,15 +135,7 @@ class Diceroll:
     
     def print_probabilities(self, precision = 4):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value in self.probabilities.keys():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-            
-        for value, probability in self.probabilities.items():
-            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, probability * 100, maxvaluewidth, precision, precision + 4))
-            
-        print()
+        print_output(self.probabilities, True, True, False, precision = precision)
     
     def print_at_least(self, precision = 4):
         self.__sort_probabilities()
@@ -202,18 +195,7 @@ class Diceroll:
     
     def plot_probabilities(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        maxpercent = 0
-        
-        for value, probability in self.probabilities.items():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-            maxpercent = max(maxpercent, probability * 100)
-        
-        for value, probability in self.probabilities.items():
-            barstr = barchar * round(probability * 100 / ((maxpercent if relativeBars else 100) / width))
-            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
-        
-        print()
+        print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars)
     
     def plot_at_least(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
