@@ -21,3 +21,11 @@ An example of exploding dice (dice that when they roll maximum, you reroll them 
 ## commoncount.py
 
 This example shows using the raw diceroller and interpreting the results of the dice in a unique way. Specifically, we roll `10d4` and then analyze the individual rolls to see how many have the same roll as each other. For example, if we rolled `1,1,1,2,2,3,3,3,3,4` we would get the result `4`, since `4` dice share the same number (the `4` rolls of `3`).
+
+## ifabove.py
+
+With this example we show two things:
+
+- the use of `apply_function` for doing arbitrary modifications on the roll values. In particular, we apply `lambda x: x if x > 3 else 0` so that rolls of of `1`, `2`, or `3` become 0 instead.
+- we use one diceroll to obtain a certain probability and then we combine multiple of that diceroll together. This technique allows us to compose fairly elaborate rolls together.
+
