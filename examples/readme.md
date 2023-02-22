@@ -29,3 +29,9 @@ With this example we show two things:
 - the use of `apply_function` for doing arbitrary modifications on the roll values. In particular, we apply `lambda x: x if x > 3 else 0` so that rolls of of `1`, `2`, or `3` become 0 instead.
 - we use one diceroll to obtain a certain probability and then we combine multiple of that diceroll together. This technique allows us to compose fairly elaborate rolls together.
 
+## ifabove2.py
+
+This example focuses on a fairly interesting mechanic: roll 1d4 for the "threshold", and then roll 6d4 and count the number of rolls above the threshold. To do this, we'll use raw dicerolls, with some additional features:
+
+- even though all the dicerolls go through the same RawDiceroll object, we name them the threshold die and the roll dice to distinguish them from each other.
+- we write a custom convert function to interpret the raw dicerolls and apply our custom mechanic
