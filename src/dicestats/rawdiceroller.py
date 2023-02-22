@@ -147,41 +147,22 @@ class RawDiceroll:
         
         self.probabilities = newprob
     
-    def print_probabilities(self, precision = 4):
-        maxlinewidth = 0
+    def __get_label_overrides(self):
         lines = {}
         
-        # build dict of lines
         for value, probability in self.probabilities.items():
             line = ' '.join(map(lambda x: '"' + str(x[0]) + '"=' + ','.join(map(lambda x: str(x), x[1])), value))
-            lines[line] = probability
+            lines[value] = line
         
-        # get maximum size for formatting purposes
-        for line in lines.keys():
-            maxlinewidth = max(maxlinewidth, len(line))
-            
-        # print
-        for line, probability in lines.items():
-            print("{0:<{2}}: {1:{4}.{3}f}%".format(line, probability * 100, maxlinewidth, precision, precision + 4))
-        print()
+        return lines
+    
+    def print_probabilities(self, precision = 4):
+        lines = self.__get_label_overrides()
+        print_output(self.probabilities, True, True, False, labelOverrides = lines, precision = precision)
     
     def plot_probabilities(self, width = 100, barchar = '#', relativeBars = False):
-        maxlinewidth = 0
-        maxpercent = 0
-        lines = {}
-        
-        # build dict of lines
-        for value, probability in self.probabilities.items():
-            line = ' '.join(map(lambda x: '"' + str(x[0]) + '"=' + ','.join(map(lambda x: str(x), x[1])), value))
-            lines[line] = probability
-            maxlinewidth = max(maxlinewidth, len(line))
-            maxpercent = max(maxpercent, probability * 100)
-            
-        # print
-        for line, probability in lines.items():
-            barstr = barchar * round(probability * 100 / ((maxpercent if relativeBars else 100) / width))
-            print("{0:<{2}}:".format(line, probability * 100, maxlinewidth), barstr)
-        print()
+        lines = self.__get_label_overrides()
+        print_output(self.probabilities, True, False, True, labelOverrides = lines, width = width, barchar = barchar, relativeBars = relativeBars)
     
     def get_probabilities(self):
         return self.probabilities
