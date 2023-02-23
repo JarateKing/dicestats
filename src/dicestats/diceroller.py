@@ -1,5 +1,6 @@
 import random
 from .outputformatter import *
+from .rawdiceroller import *
 
 class Diceroller:
     def rolldie(sides):
@@ -113,6 +114,38 @@ class Diceroller:
             probabilities = newprob.copy()
         
         return probabilities
+    
+    def highest(count, sides, toKeep):
+        # TODO: refactor and optimize
+        raw = RawDiceroll()
+        raw.apply_probability(RawDiceroller.rolldice(count, sides))
+        
+        def highestConverter(rawdice):
+            count = 0
+            
+            for dicetype in rawdice:
+                for i, roll in enumerate(dicetype[1]):
+                    if i > len(dicetype[1]) - toKeep - 1:
+                        count += roll
+            return count
+        
+        return raw.convert_probabilities(highestConverter)
+    
+    def lowest(count, sides, toKeep):
+        # TODO: refactor and optimize
+        raw = RawDiceroll()
+        raw.apply_probability(RawDiceroller.rolldice(count, sides))
+        
+        def lowestConverter(rawdice):
+            count = 0
+            
+            for dicetype in rawdice:
+                for i, roll in enumerate(dicetype[1]):
+                    if i < toKeep:
+                        count += roll
+            return count
+        
+        return raw.convert_probabilities(lowestConverter)
 
 class Diceroll:
     def __init__(self):
