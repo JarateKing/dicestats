@@ -74,6 +74,57 @@ class Diceroller:
         
         return probabilities
     
+    def penetratingdice(count, sides, recursiveDepth = 0, probabilityLimit = 0):
+        # get exploded probabilities
+        explodedProbabilities = {}
+        offset = 0
+        runningProbability = 1
+        
+        if probabilityLimit != 0:
+            recursiveDepth = 1000
+        
+        # if we roll more than the number of sides, everything will be 0
+        torepeat = sides
+        if recursiveDepth != 0:
+            torepeat = min(torepeat, recursiveDepth)
+        
+        for r in range(torepeat):
+            for i in range(sides):
+                current = max(offset + i + 1 - r, offset)
+                probability = 1 / sides * runningProbability
+                
+                if (i + 1) != sides:
+                    if not current in explodedProbabilities.keys():
+                        explodedProbabilities[current] = 0
+                        
+                    explodedProbabilities[current] += probability
+                else:
+                    offset = current
+                    runningProbability = probability
+                
+                if runningProbability <= probabilityLimit:
+                    break
+            if runningProbability <= probabilityLimit:
+                break
+        
+        # apply exploded probabilities with rolls
+        probabilities = {0: 1.0}
+        for i in range(count):
+            newprob = {}
+            
+            for value, probability in probabilities.items():
+                for value2, probability2 in explodedProbabilities.items():
+                    current = value + value2
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+            
+            probabilities = newprob.copy()
+        
+        return probabilities
+    
     def advantage(count, sides):
         probabilities = {0: 1.0}
         
