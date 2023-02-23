@@ -167,7 +167,7 @@ class RawDiceroll:
     def get_probabilities(self):
         return self.probabilities
     
-    def convert(self, function):
+    def convert_probabilities(self, function):
         newprob = {}
         
         for value, probability in self.probabilities.items():
@@ -177,7 +177,9 @@ class RawDiceroll:
                 newprob[current] = 0
                 
             newprob[current] += probability
-        
+        return newprob
+    
+    def convert(self, function):
         toret = Diceroll()
-        toret.set_probabilities(newprob)
+        toret.set_probabilities(self.convert_probabilities(function))
         return toret
