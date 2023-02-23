@@ -139,59 +139,19 @@ class Diceroll:
     
     def print_at_least(self, precision = 4):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value in self.probabilities.keys():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 1
-        for value, probability in self.probabilities.items():
-            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, current * 100, maxvaluewidth, precision, precision + 4))
-            current -= probability
-        
-        print()
+        print_output(self.probabilities, True, True, False, precision = precision, comparisonType = comparison.AT_LEAST)
     
     def print_at_most(self, precision = 4):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value in self.probabilities.keys():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 0
-        for value, probability in self.probabilities.items():
-            current += probability
-            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, current * 100, maxvaluewidth, precision, precision + 4))
-        
-        print()
+        print_output(self.probabilities, True, True, False, precision = precision, comparisonType = comparison.AT_MOST)
     
     def print_less_than(self, precision = 4):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value in self.probabilities.keys():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 0
-        for value, probability in self.probabilities.items():
-            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, current * 100, maxvaluewidth, precision, precision + 4))
-            current += probability
-        
-        print()
+        print_output(self.probabilities, True, True, False, precision = precision, comparisonType = comparison.LESS_THAN)
     
     def print_more_than(self, precision = 4):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value in self.probabilities.keys():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 1
-        for value, probability in self.probabilities.items():
-            current -= probability
-            print("{0: >{2}d}: {1:{4}.{3}f}%".format(value, current * 100, maxvaluewidth, precision, precision + 4))
-        
-        print()
+        print_output(self.probabilities, True, True, False, precision = precision, comparisonType = comparison.MORE_THAN)
     
     def plot_probabilities(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
@@ -199,72 +159,19 @@ class Diceroll:
     
     def plot_at_least(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        
-        for value, probability in self.probabilities.items():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 1
-        for value, probability in self.probabilities.items():
-            barstr = barchar * round(current * 100 / (100 / width))
-            current -= probability
-            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
-        
-        print()
+        print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars, comparisonType = comparison.AT_LEAST)
     
     def plot_at_most(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        maxpercent = 100
-        
-        for value, probability in self.probabilities.items():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-        
-        current = 0
-        for value, probability in self.probabilities.items():
-            current += probability
-            barstr = barchar * round(current * 100 / (100 / width))
-            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
-        
-        print()
+        print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars, comparisonType = comparison.AT_MOST)
     
     def plot_less_than(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        maxpercent = 0
-        
-        current = 0
-        for value, probability in self.probabilities.items():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-            maxpercent = max(maxpercent, current * 100)
-            current += probability
-        
-        current = 0
-        for value, probability in self.probabilities.items():
-            barstr = barchar * round(current * 100 / ((maxpercent if relativeBars else 100) / width))
-            current += probability
-            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
-        
-        print()
+        print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars, comparisonType = comparison.LESS_THAN)
     
     def plot_more_than(self, width = 100, barchar = '#', relativeBars = False):
         self.__sort_probabilities()
-        maxvaluewidth = 0
-        maxpercent = 0
-        
-        current = 1
-        for value, probability in self.probabilities.items():
-            maxvaluewidth = max(maxvaluewidth, len(str(value)))
-            current -= probability
-            maxpercent = max(maxpercent, current * 100)
-        
-        current = 1
-        for value, probability in self.probabilities.items():
-            current -= probability
-            barstr = barchar * round(current * 100 / ((maxpercent if relativeBars else 100) / width))
-            print("{0: >{1}d}:".format(value, maxvaluewidth), barstr)
-        
-        print()
+        print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars, comparisonType = comparison.MORE_THAN)
     
     def print_statistics(self, precision = 4):
         mean = 0
