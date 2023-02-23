@@ -174,6 +174,23 @@ class Diceroll:
         print_output(self.probabilities, True, False, True, width = width, barchar = barchar, relativeBars = relativeBars, comparisonType = comparison.MORE_THAN)
     
     def print_statistics(self, precision = 4):
+        minimum = 0
+        minimumSet = False
+        maximum = 0
+        maximumSet = False
+        for value, probability in self.probabilities.items():
+            if minimumSet:
+                minimum = min(minimum, value)
+            else:
+                minimum = value
+                minimumSet = True
+            if maximumSet:
+                maximum = max(maximum, value)
+            else:
+                maximum = value
+                maximumSet = True
+        print("range:    [{0},{1}]".format(minimum, maximum))
+        
         mean = 0
         for value, probability in self.probabilities.items():
             mean += value * probability
