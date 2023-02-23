@@ -72,6 +72,25 @@ class Diceroller:
             probabilities = newprob.copy()
         
         return probabilities
+    
+    def advantage(count, sides):
+        probabilities = {0: 1.0}
+        
+        for i in range(count):
+            newprob = {}
+            
+            for value, probability in probabilities.items():
+                for value2, probability2 in Diceroller.rolldie(sides).items():
+                    current = max(value, value2)
+                    
+                    if not current in newprob.keys():
+                        newprob[current] = 0
+                    
+                    newprob[current] += probability * probability2
+            
+            probabilities = newprob.copy()
+        
+        return probabilities
 
 class Diceroll:
     def __init__(self):
