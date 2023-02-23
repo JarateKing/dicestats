@@ -18,6 +18,10 @@ This is the raw diceroller's equivalent for `basic.py`. It also rolls 3d6 and pr
 
 This example demonstrates a more complex dice expression, `3d6 - 2d4 + (3d2 * 2) + 5` which involves adding multiple dice together in a single roll, doing a separate roll and multiplying that before merging it into the other dice roll, and dealing with constants.
 
+## advantage.py
+
+In this example we show rolling with advantage and disadvantage, or rolling twice and taking the highest roll with advantage and the lowest roll with disadvantage.
+
 ## exploding.py
 
 An example of exploding dice (dice that when they roll maximum, you reroll them and add the results together, potentially repeating this again each time you roll maximum). Specifically, we roll `2d4` and explode each dice individually when they roll `4`. Because technically any arbitrarily high number could be rolled (though it becomes very unlikely) we also show off different ways to set limits -- by default, dice will only explode up to `10` times. We show manually setting that limit to `5`, and we show another method of limiting it by cutting it off after we're dealing with probabilities below `0.001`.
