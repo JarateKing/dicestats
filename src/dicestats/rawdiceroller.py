@@ -115,6 +115,9 @@ class RawConvert:
                 currentplayer += roll
             allrolls.append(currentplayer)
         
+        if len(set(allrolls)) != len(allrolls):
+            return 0
+        
         turnList = [i for (v, i) in reversed(sorted((v, i) for (i, v) in enumerate(allrolls)))]
         turnOrder = 0
         for turn in turnList:
