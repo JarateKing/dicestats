@@ -55,3 +55,9 @@ This example focuses on a fairly interesting mechanic: roll 1d4 for the "thresho
 
 - even though all the dicerolls go through the same RawDiceroll object, we name them the threshold die and the roll dice to distinguish them from each other.
 - we write a custom convert function to interpret the raw dicerolls and apply our custom mechanic
+
+## gofirst.py
+
+The idea of [go first dice](http://www.ericharshbarger.org/dice/go_first_dice.html) is dice that can be used to determine turn orders of players with a single roll by each player. There are some additional conditions that they follow: there shouldn't be any ties, each player should be equally likely to go in each order, ideally each permutation would be possible as well, preferably it would only involve a single die for each player, etc. But the details aren't too important for us here, the important thing is the example.
+
+We distinguish different dicerolls per player with a RawDiceroll, and then we convert them using `goFirst`. This will give us the probabilities of each turn order (in the form of a number that looks like `123` -- Player 1 goes first, then Player 2, then Player 3) or a 0 in the case that it's ambiguous (multiple players rolled the same number).
