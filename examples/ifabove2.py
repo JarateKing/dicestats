@@ -28,6 +28,7 @@ def aboveroll(rawdice):
     return count
 
 # use our conversion function to get the values rolled
-diceroll = rawroll.convert(aboveroll)
+diceroll = dicestats.Diceroll()
+diceroll.set_probabilities(rawroll.convert_probabilities(dicestats.RawConvert.maxShared))
 diceroll.print_probabilities()
 diceroll.plot_probabilities(relativeBars = True)
