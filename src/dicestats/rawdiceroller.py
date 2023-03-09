@@ -105,6 +105,23 @@ class RawConvert:
             best = max(best, value)
         
         return best
+    
+    def goFirst(rawdice):
+        allrolls = []
+        
+        for dicetype in rawdice:
+            currentplayer = 0
+            for roll in dicetype[1]:
+                currentplayer += roll
+            allrolls.append(currentplayer)
+        
+        turnList = [i for (v, i) in reversed(sorted((v, i) for (i, v) in enumerate(allrolls)))]
+        turnOrder = 0
+        for turn in turnList:
+            turnOrder *= 10
+            turnOrder += turn + 1
+        
+        return turnOrder
 
 class RawDiceroll:
     def __init__(self):
