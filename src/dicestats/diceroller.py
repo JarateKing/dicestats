@@ -14,20 +14,30 @@ class Diceroller:
     
     def rolldice(count, sides):
         probabilities = {0: 1.0}
+        powerbilities = Diceroller.rolldie(sides)
         
-        for i in range(count):
-            newprob = {}
+        # binary exponentiation
+        while (count > 0):
+            if (count % 2):
+                newprob = {}
+                for value, probability in probabilities.items():
+                    for value2, probability2 in powerbilities.items():
+                        current = value + value2
+                        if not current in newprob.keys():
+                            newprob[current] = 0
+                        newprob[current] += probability * probability2
+                probabilities = newprob
             
-            for value, probability in probabilities.items():
-                for value2, probability2 in Diceroller.rolldie(sides).items():
+            newprob = {}
+            for value, probability in powerbilities.items():
+                for value2, probability2 in powerbilities.items():
                     current = value + value2
-                    
                     if not current in newprob.keys():
                         newprob[current] = 0
-                    
                     newprob[current] += probability * probability2
+            powerbilities = newprob
             
-            probabilities = newprob.copy()
+            count = count // 2
         
         return probabilities
     
