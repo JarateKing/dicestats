@@ -3,85 +3,62 @@ from .outputformatter import *
 from .rawdiceroller import *
 
 class ProbabilisticDiceroller:
-	def rolldie(sides):
+	def rolldie(sides, name = ''):
 		def internal(sides):
-			return random.randint(1, sides)
+			return [random.randint(1, sides)]
 		
-		return lambda: internal(sides)
+		return lambda: {name:internal(sides)}
 	
-	def rolldice(count, sides):
+	def rolldice(count, sides, name = ''):
 		def internal(count, sides):
-			current = 0
+			current = []
 		
 			for i in range(count):
-				current += random.randint(1, sides)
+				current.append(random.randint(1, sides))
 		
 			return current
 		
-		return lambda: internal(count, sides)
-	
-	def explodingdice(count, sides, recursiveDepth = 10, probabilityLimit = 0):
-		return lambda: 0
-	
-	def penetratingdice(count, sides, recursiveDepth = 0, probabilityLimit = 0):
-		return lambda: 0
-	
-	def advantage(count, sides):
-		return lambda: 0
-	
-	def disadvantage(count, sides):
-		return lambda: 0
-	
-	def highest(count, sides, toKeep):
-		return lambda: 0
-	
-	def lowest(count, sides, toKeep):
-		return lambda: 0
+		return lambda: {name:internal(count, sides)}
+
+class ProbabilisticConvert:
+    def add(rawdice):
+        total = 0
+        
+        for dicetype in rawdice.values():
+            for roll in dicetype:
+                total += roll
+        
+        return total
 
 class ProbabilisticDiceroll:
 	def __init__(self):
 		self.probabilities = {0: 1.0}
 		self.funcs = []
 	
-	def simulate(self, numberOfSimulations):
+	def simulate(self, conversion, numberOfSimulations):
 		newprob = {}
-	
+		
 		for i in range(numberOfSimulations):
-			current = 0
-			for (probfunc, appliedfunc) in self.funcs:
-				current = appliedfunc(current, probfunc())
+			current = {}
 			
-			if not current in newprob.keys():
-				newprob[current] = 0
-			newprob[current] += 1.0
+			for function in self.funcs:
+				rolled = function()
+				for label, dice in rolled.items():
+					if not label in current.keys():
+						current[label] = []
+					current[label] += dice
+			
+			converted = conversion(current)
+			if not converted in newprob.keys():
+				newprob[converted] = 0
+			newprob[converted] += 1.0
 		
 		self.probabilities = {}
 		for value, probability in newprob.items():
 			self.probabilities[value] = probability / numberOfSimulations
 	
-	def apply_probability(self, probabilityFunction, appliedFunction):
-		self.funcs.append((probabilityFunction, appliedFunction))
-	
-	def add(self, probabilityFunction):
-		self.apply_probability(probabilityFunction, lambda x, y: x + y)
-	
-	def subtract(self, probabilityFunction):
-		self.apply_probability(probabilityFunction, lambda x, y: x - y)
-	
-	def multiply(self, probabilityFunction):
-		self.apply_probability(probabilityFunction, lambda x, y: x * y)
-	
-	def apply_function(self, function):
-		self.funcs.append((lambda: 0, function))
-	
-	def add_constant(self, constant):
-		self.apply_function(lambda x, y: x + constant)
-	
-	def subtract_constant(self, constant):
-		self.apply_function(lambda x, y: x - constant)
-		
-	def multiply_constant(self, constant):
-		self.apply_function(lambda x, y: x * constant)
+	def add(self, function):
+		self.funcs.append(function)
 	
 	def __sort_probabilities(self):
 		self.probabilities = dict(sorted(self.probabilities.items()))

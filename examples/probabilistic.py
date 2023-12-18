@@ -6,10 +6,10 @@ import dicestats
 diceroll = dicestats.ProbabilisticDiceroll()
 
 # roll 3d6
-diceroll.add(dicestats.ProbabilisticDiceroller.rolldice(3, 6))
+diceroll.add(dicestats.ProbabilisticDiceroller.rolldice(10, 20))
 
-# run simulator
-diceroll.simulate(1000000)
+# simulate 100k rolls
+diceroll.simulate(dicestats.ProbabilisticConvert.add, 100000)
 
 # print out the chances
 diceroll.print_probabilities()
