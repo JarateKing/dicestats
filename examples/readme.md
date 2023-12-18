@@ -61,3 +61,9 @@ This example focuses on a fairly interesting mechanic: roll 1d4 for the "thresho
 The idea of [go first dice](http://www.ericharshbarger.org/dice/go_first_dice.html) is dice that can be used to determine turn orders of players with a single roll by each player. There are some additional conditions that they follow: there shouldn't be any ties, each player should be equally likely to go in each order, ideally each permutation would be possible as well, preferably it would only involve a single die for each player, etc. But the details aren't too important for us here, the important thing is the example.
 
 We distinguish different dicerolls per player with a RawDiceroll, and then we convert them using `goFirst`. This will give us the probabilities of each turn order (in the form of a number that looks like `123` -- Player 1 goes first, then Player 2, then Player 3) or a 0 in the case that it's ambiguous (multiple players rolled the same number).
+
+## probabilistic.py
+
+This example demonstrates the probabilistic diceroller. This operates similarly to the raw diceroller, except that instead of directly calculating all probabilities it runs many simulations to approximate the probability distribution. The big benefit of this is that raw dice can quickly become too large to calculate efficiently or store in memory, but an individual roll (even repeated hundreds of thousands of times) can be done.
+
+The big difference here is that we need to call `diceroll.simulate` to generate our probability distribution. This requires a conversion function (to turn lists of dice rolled into a single value) and a number of simulations to run (higher is better, but slower).
