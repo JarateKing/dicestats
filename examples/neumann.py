@@ -3,9 +3,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 import dicestats
 
 # two coinflips
+# label the first "1" and the second "2" to keep the right order
 rawroll = dicestats.RawDiceroll()
-rawroll.apply_probability(dicestats.RawDiceroller.rolldice(1, 2, 'a'))
-rawroll.apply_probability(dicestats.RawDiceroller.rolldice(1, 2, 'b'))
+rawroll.apply_probability(dicestats.RawDiceroller.rolldice(1, 2, '1'))
+rawroll.apply_probability(dicestats.RawDiceroller.rolldice(1, 2, '2'))
 
 # use the first result if both results are different
 # result is 0 otherwise, if they are the same
