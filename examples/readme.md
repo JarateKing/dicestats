@@ -68,6 +68,8 @@ This example demonstrates the probabilistic diceroller. This operates similarly 
 
 The big difference here is that we need to call `diceroll.simulate` to generate our probability distribution. This requires a conversion function (to turn lists of dice rolled into a single value) and a number of simulations to run (higher is better, but slower).
 
+This won't be perfectly accurate because of its random nature. But by simulating enough dicerolls it will trend towards more accuracy, and with enough simulations run should be acceptable.
+
 ## neumann.py
 
 This demonstrates John von Neumann's method of getting fair results from an unfair coin. The exact method is to flip the coin twice and use the first result if the two results differ, otherwise try again.
